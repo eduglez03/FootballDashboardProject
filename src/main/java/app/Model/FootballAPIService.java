@@ -358,6 +358,71 @@ public class FootballAPIService implements APIService {
     return teams;
   }
 
+  public void getTeamsStatistics(List<Team> teams, int leagueId, int season) {
+    for (Team team : teams) {
+      try {
+        // Construir la URL para obtener las estadísticas del equipo
+        String urlString = String.format(
+                "https://v3.football.api-sports.io/teams/statistics?season=%d&team=%d&league=%d",
+                season, team.getId(), leagueId
+        );
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("x-rapidapi-host", "v3.football.api-sports.io");
+        connection.setRequestProperty("x-rapidapi-key", API_KEY);
 
+        int responseCode = connection.getResponseCode();
 
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+          try (Scanner scanner = new Scanner(connection.getInputStream())) {
+            StringBuilder result = new StringBuilder();
+            while (scanner.hasNext()) {
+              result.append(scanner.nextLine());
+            }
+
+            // Imprimir la respuesta completa para depuración
+            System.out.println("Respuesta JSON para el equipo " + team.getName() + ": " + result);
+
+            // Procesar la respuesta JSON y extraer las estadísticas
+            JsonObject jsonResponse = JsonParser.parseString(result.toString()).getAsJsonObject();
+            JsonObject response = jsonResponse.getAsJsonObject("response");
+
+            if (response != null) {
+              JsonObject fixtures = response.getAsJsonObject("fixtures");
+              if (fixtures != null) {
+                // Extraer estadísticas del equipo
+                int points = fixtures.get("points").getAsInt();
+                int wins = fixtures.getAsJsonObject("wins").get("total").getAsInt();
+                int draws = fixtures.getAsJsonObject("draws").get("total").getAsInt();
+                int losses = fixtures.getAsJsonObject("loses").get("total").getAsInt();
+                int goalsFor = response.getAsJsonObject("goals").getAsJsonObject("for").getAsJsonObject("total").get("total").getAsInt();
+                int goalsAgainst = response.getAsJsonObject("goals").getAsJsonObject("against").getAsJsonObject("total").get("total").getAsInt();
+
+                // Asignar las estadísticas al equipo
+                team.setPoints(points);
+                team.setWins(wins);
+                team.setDraws(draws);
+                team.setLosses(losses);
+                team.setGoalsFor(goalsFor);
+                team.setGoalsAgainst(goalsAgainst);
+              } else {
+                System.out.println("No se encontraron estadísticas de fixtures para el equipo " + team.getName());
+              }
+            } else {
+              System.out.println("No se encontraron estadísticas para el equipo " + team.getName());
+            }
+          }
+        } else {
+          System.out.println("Error al obtener estadísticas para el equipo " + team.getId() + ": " + responseCode);
+        }
+      } catch (IOException e) {
+        System.out.println("Error de conexión para el equipo " + team.getId() + ": " + e.getMessage());
+        e.printStackTrace();
+      } catch (Exception e) {
+        System.out.println("Error al procesar los datos para el equipo " + team.getId());
+        e.printStackTrace();
+      }
+    }
+  }
 }
