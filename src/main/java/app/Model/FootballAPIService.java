@@ -291,6 +291,73 @@ public class FootballAPIService implements APIService {
     return leagues;
   }
 
+  // Método para obtener los equipos de una liga
+  public List<Team> getTeamFromLeague(int leagueId, int season) {
+    try {
+      // Construir la URL para obtener los equipos de la liga
+      String apiUrl = "https://v3.football.api-sports.io/teams?league=" + leagueId + "&season=" + season;
+      URL url = new URL(apiUrl);
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      connection.setRequestProperty("x-rapidapi-host", "v3.football.api-sports.io");
+      connection.setRequestProperty("x-rapidapi-key", API_KEY);
+      connection.setRequestMethod("GET");
+
+      // Comprobar el código de respuesta
+      int responseCode = connection.getResponseCode();
+
+      // Verificar si la respuesta es correcta (código 200)
+      if (responseCode != 200) {
+        System.out.println("Error al obtener los equipos. Código de error: " + responseCode);
+        return List.of(); // Retornar lista vacía si hay un error
+      }
+
+      // Leer la respuesta
+      Scanner scanner = new Scanner(connection.getInputStream());
+      StringBuilder result = new StringBuilder();
+      while (scanner.hasNext()) {
+        result.append(scanner.nextLine());
+      }
+      scanner.close();
+
+      // Imprimir la respuesta para depuración
+      System.out.println("Respuesta de la API: " + result);
+
+      // Procesar y retornar los equipos
+      return parseTeams(result.toString());
+    } catch (Exception e) {
+      System.out.println("Excepción al obtener los equipos: " + e.getMessage());
+      e.printStackTrace();
+      return List.of(); // Retornar lista vacía si hay un error
+    }
+  }
+
+
+  // Método para procesar la respuesta JSON y obtener los equipos
+  private List<Team> parseTeams(String jsonResponse) {
+    List<Team> teams = new ArrayList<>();
+    try {
+      JsonObject response = JsonParser.parseString(jsonResponse).getAsJsonObject();
+      JsonArray teamsArray = response.getAsJsonArray("response"); // Obtener el array de equipos
+
+      // Iterar sobre cada elemento del array y crear los objetos Team
+      for (JsonElement element : teamsArray) {
+        JsonObject teamObject = element.getAsJsonObject();
+        JsonObject teamData = teamObject.getAsJsonObject("team");
+
+        // Obtener los datos del equipo
+        int id = teamData.get("id").getAsInt();
+        String name = teamData.get("name").getAsString();
+
+        // Crear un objeto Team y agregarlo a la lista
+        Team team = new Team(id, name);
+        teams.add(team);
+      }
+    } catch (Exception e) {
+      System.err.println("Error al procesar los equipos: " + e.getMessage());
+    }
+    return teams;
+  }
+
 
 
 }
