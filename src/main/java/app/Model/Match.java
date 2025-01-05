@@ -100,4 +100,16 @@ public class Match {
     return String.format("%s %d - %d %s", homeTeam, homeGoals, awayGoals, awayTeam);
   }
 
+  public void getLineups() {
+    FootballAPIService apiService = new FootballAPIService();
+    Map<String, List<String>> lineup = apiService.fetchLineupForMatch(matchId);
+
+    if (lineup != null && lineup.containsKey("home") && lineup.containsKey("away")) {
+      homeTeamLineup = lineup.get("home");
+      awayTeamLineup = lineup.get("away");
+    } else {
+      // Maneja el caso en que las alineaciones no están disponibles
+      System.out.println("No se pudieron obtener las alineaciones");
+    }
+  }
 }
