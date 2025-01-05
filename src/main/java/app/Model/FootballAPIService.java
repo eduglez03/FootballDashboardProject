@@ -123,4 +123,107 @@ public class FootballAPIService implements APIService {
       return 0;
     }
   }
+
+  /**
+   * Fetches the lineups for a specific match.
+   *
+   * @param matchId The ID of the match.
+   * @return A map containing the lineups of both teams.
+   */
+  public Map<String, List<String>> fetchLineupForMatch(String matchId) {
+    try {
+      // URL para obtener las alineaciones de un partido
+      String lineupUrl = "https://v3.football.api-sports.io/fixtures/lineups?fixture=" + matchId;
+
+      URL url = new URL(lineupUrl);
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      connection.setRequestProperty("x-rapidapi-key", API_KEY);
+      connection.setRequestProperty("x-rapidapi-host", "v3.football.api-sports.io");
+      connection.setRequestMethod("GET");
+
+      int responseCode = connection.getResponseCode();
+      if (responseCode != 200) {
+        System.out.println("Error al obtener las alineaciones. Código de error: " + responseCode);
+        return Map.of(); // Return empty map if there's an error
+      }
+
+      Scanner scanner = new Scanner(connection.getInputStream());
+      StringBuilder result = new StringBuilder();
+      while (scanner.hasNext()) {
+        result.append(scanner.nextLine());
+      }
+      scanner.close();
+
+      // Verificar el contenido de la respuesta
+      System.out.println("Respuesta de la API: " + result.toString());
+
+      // Parsear el JSON para obtener las alineaciones
+      return parseLineup(result.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+      return Map.of(); // Return empty map if there's an error
+    }
+  }
+
+  /**
+   * Parses the JSON response to extract the lineups for both teams.
+   *
+   * @param json The JSON response containing the lineups.
+   * @return A map containing the lineups for both teams.
+   */
+  private Map<String, List<String>> parseLineup(String json) {
+    JsonObject response = JsonParser.parseString(json).getAsJsonObject();
+    JsonArray lineups = response.getAsJsonArray("response");
+
+    Map<String, List<String>> teamLineups = new HashMap<>();
+
+    // Iterar sobre las alineaciones y extraer los jugadores para cada equipo
+    for (JsonElement lineupElement : lineups) {
+      JsonObject lineup = lineupElement.getAsJsonObject();
+      JsonObject team = lineup.getAsJsonObject("team");
+
+      // Crear listas para las alineaciones de los equipos
+      List<String> homeTeamLineup = new ArrayList<>();
+      List<String> awayTeamLineup = new ArrayList<>();
+
+      // Alineación del equipo local
+      JsonArray homePlayers = lineup.getAsJsonArray("startXI");  // Corregido para acceder a la alineación
+      for (JsonElement playerElement : homePlayers) {
+        JsonObject player = playerElement.getAsJsonObject();
+        JsonObject playerDetails = player.getAsJsonObject("player");
+
+        String playerName = playerDetails.get("name").getAsString();
+        int playerNumber = playerDetails.get("number").getAsInt();
+        String playerPos = playerDetails.get("pos").getAsString();
+
+        // Añadir el jugador con su nombre, número de dorsal y posición
+        homeTeamLineup.add(String.format("%s (Dorsal: %d, Posición: %s)", playerName, playerNumber, playerPos));
+      }
+
+      // Alineación del equipo visitante
+      JsonArray awayPlayers = lineup.getAsJsonArray("startXI");  // Corregido para acceder a la alineación
+      for (JsonElement playerElement : awayPlayers) {
+        JsonObject player = playerElement.getAsJsonObject();
+        JsonObject playerDetails = player.getAsJsonObject("player");
+
+        String playerName = playerDetails.get("name").getAsString();
+        int playerNumber = playerDetails.get("number").getAsInt();
+        String playerPos = playerDetails.get("pos").getAsString();
+
+        // Añadir el jugador con su nombre, número de dorsal y posición
+        awayTeamLineup.add(String.format("%s (Dorsal: %d, Posición: %s)", playerName, playerNumber, playerPos));
+      }
+
+      // Guardar las alineaciones de ambos equipos
+      teamLineups.put("home", homeTeamLineup);
+      teamLineups.put("away", awayTeamLineup);
+    }
+
+    return teamLineups;
+  }
+
+
+
+
+
 }
