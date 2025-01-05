@@ -223,6 +223,73 @@ public class FootballAPIService implements APIService {
   }
 
 
+  /**
+   * Obtiene todas las ligas disponibles desde la API.
+   *
+   * @return Una lista de objetos League.
+   */
+  public List<League> getLeagues() {
+    try {
+      // URL para obtener las ligas
+      String leaguesUrl = "https://v3.football.api-sports.io/leagues";
+
+      // Configurar conexión
+      URL url = new URL(leaguesUrl);
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      connection.setRequestProperty("x-rapidapi-key", API_KEY);
+      connection.setRequestProperty("x-rapidapi-host", "v3.football.api-sports.io");
+      connection.setRequestMethod("GET");
+
+      // Comprobar el código de respuesta
+      int responseCode = connection.getResponseCode();
+      if (responseCode != 200) {
+        System.out.println("Error al obtener las ligas. Código de error: " + responseCode);
+        return List.of(); // Retornar lista vacía si hay un error
+      }
+
+      // Leer la respuesta
+      Scanner scanner = new Scanner(connection.getInputStream());
+      StringBuilder result = new StringBuilder();
+      while (scanner.hasNext()) {
+        result.append(scanner.nextLine());
+      }
+      scanner.close();
+
+      // Procesar y retornar las ligas
+      return parseLeagues(result.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+      return List.of(); // Retornar lista vacía si hay un error
+    }
+  }
+
+  /**
+   * Procesa la respuesta JSON para extraer las ligas.
+   *
+   * @param jsonResponse La respuesta JSON de la API.
+   * @return Una lista de objetos League.
+   */
+  private List<League> parseLeagues(String jsonResponse) {
+    List<League> leagues = new ArrayList<>();
+    try {
+      JSONObject jsonObject = new JSONObject(jsonResponse);
+      JSONArray leaguesArray = jsonObject.getJSONArray("response");
+
+      for (int i = 0; i < leaguesArray.length(); i++) {
+        JSONObject leagueJson = leaguesArray.getJSONObject(i).getJSONObject("league");
+        int id = leagueJson.getInt("id");
+        String name = leagueJson.getString("name");
+
+        // Crear objeto League y agregarlo a la lista
+        League league = new League(id, name);
+        leagues.add(league);
+      }
+    } catch (Exception e) {
+      System.err.println("Error al procesar las ligas: " + e.getMessage());
+      e.printStackTrace();
+    }
+    return leagues;
+  }
 
 
 
