@@ -15,6 +15,12 @@ import java.util.*;
 
 /**
  * Implementation of the APIService interface for fetching football match results from a public API.
+ *
+ * API-Key:
+ *   186dc55fb4942acfd2b06fbf59e11995
+ *   33986fdfb4636b754f270318bd02c88d
+ *   760bb5c7255c71ca019b9aa3b2ed7cb2
+ *   dfed2726a7407b4ae16e67c5ae27c435
  */
 public class FootballAPIService implements APIService {
   private static final String API_URL = "https://v3.football.api-sports.io/fixtures?live=all"; // API URL
@@ -392,7 +398,6 @@ public class FootballAPIService implements APIService {
               JsonObject fixtures = response.getAsJsonObject("fixtures");
               if (fixtures != null) {
                 // Extraer estadísticas del equipo
-                int points = fixtures.get("points").getAsInt();
                 int wins = fixtures.getAsJsonObject("wins").get("total").getAsInt();
                 int draws = fixtures.getAsJsonObject("draws").get("total").getAsInt();
                 int losses = fixtures.getAsJsonObject("loses").get("total").getAsInt();
@@ -400,7 +405,6 @@ public class FootballAPIService implements APIService {
                 int goalsAgainst = response.getAsJsonObject("goals").getAsJsonObject("against").getAsJsonObject("total").get("total").getAsInt();
 
                 // Asignar las estadísticas al equipo
-                team.setPoints(points);
                 team.setWins(wins);
                 team.setDraws(draws);
                 team.setLosses(losses);
