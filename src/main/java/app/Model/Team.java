@@ -8,7 +8,6 @@ public class Team {
     private int losses;
     private int goalsFor;
     private int goalsAgainst;
-    private int points;
 
     public Team(int id, String name) {
         this.id = id;
@@ -30,14 +29,6 @@ public class Team {
 
     public void setWins(int wins) {
         this.wins = wins;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 
     public int getDraws() {
