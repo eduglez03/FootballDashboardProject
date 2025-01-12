@@ -29,3 +29,26 @@ public class NotificationView {
         panel.add(scrollPane, BorderLayout.CENTER);
         panel.add(buttonPanel, BorderLayout.SOUTH);
     }
+
+    public void resetNotificationArea() { notificationArea.setText(""); }
+
+    public void show() {
+        panel.setVisible(true);
+    }
+
+    public void hide() {
+        panel.setVisible(false);
+    }
+
+    public JTextArea getNotificationArea() {
+        return notificationArea;
+    }
+
+    public JPanel getPanel() {
+        return panel;
+    }
+
+    public void addBackButtonListener(ActionListener listener) {
+        backButton.addActionListener(listener);
+    }
+}
