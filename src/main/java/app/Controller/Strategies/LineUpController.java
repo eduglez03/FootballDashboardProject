@@ -9,44 +9,54 @@ import app.View.Components.LineUpView;
 import javax.swing.*;
 import java.util.Map;
 
+/**
+ * LineUpController
+ */
 public class LineUpController implements ControllerStrategy {
-    private LineUpView lineupView;
-    private Map<String, Match> liveMatches;
-    private FootballAPIService footballAPIService = new FootballAPIService(); // Simulación del servicio
-    private MatchNotifier matchNotifier = new MatchNotifier(); // Simulación del servicio
-    private MatchUpdater matchUpdater = new MatchUpdater(footballAPIService, matchNotifier); // Simulación del servicio
+    private LineUpView lineupView; // LineUpView
+    private Map<String, Match> liveMatches; // Live matches
+    private FootballAPIService footballAPIService = new FootballAPIService(); // API service
+    private MatchNotifier matchNotifier = new MatchNotifier(); // Match notifier
+    private MatchUpdater matchUpdater = new MatchUpdater(footballAPIService, matchNotifier); // Match updater
 
-    public LineUpController(LineUpView lineupView) {
-        this.lineupView = lineupView;
-    }
+    /**
+     * Constructor
+     * @param lineupView LineUpView
+     */
+    public LineUpController(LineUpView lineupView) { this.lineupView = lineupView; }
 
+    /**
+     * Execute
+     */
     @Override
     public void execute() {
         System.out.println("Fetching live matches and displaying lineups...");
 
-        // Inicializa los servicios relacionados con la API
+        // Set the live matches
         this.liveMatches = matchUpdater.getLiveMatches();
 
-        // Limpia y muestra la vista inicial
         lineupView.clear();
-        lineupView.setMatchList(liveMatches); // Pasar los partidos a la vista
+        lineupView.setMatchList(liveMatches);
         lineupView.setVisible(true);
 
-        // Configurar acción para ver las alineaciones del partido seleccionado
+        // Set the action listeners for the buttons in the view
         lineupView.getViewLineupButton().addActionListener(e -> showSelectedMatchLineups());
 
-        // Reiniciar la funcionalidad al pulsar "Volver"
+        // Reset the view
         lineupView.getBackButton().addActionListener(e -> {
-            lineupView.clear(); // Limpia el estado actual de la vista
-            execute(); // Reinicia el proceso desde el principio
+            lineupView.clear();
+            execute(); // Re-execute the controller
         });
     }
 
+    /**
+     * Show selected match lineups
+     */
     private void showSelectedMatchLineups() {
         int selectedIndex = lineupView.getSelectedMatchIndex();
         if (selectedIndex != -1) {
             Match selectedMatch = (Match) liveMatches.values().toArray()[selectedIndex];
-            lineupView.showLineups(selectedMatch); // Usar el método de la vista para mostrar alineaciones
+            lineupView.showLineups(selectedMatch); // Update the view with the lineups
         } else {
             JOptionPane.showMessageDialog(lineupView.getPanel(), "Por favor, selecciona un partido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
