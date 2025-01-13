@@ -13,37 +13,43 @@ import app.View.Components.NotificationView;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * MainView class that extends JFrame and creates the main window of the application.
+ */
 public class MainView extends JFrame {
-  private final MainController controller;
-  private final LiveMatchesView liveMatchesView;
-  private final LineUpView lineUpView;
-  private final NotificationView NotificationView;
-  private final LeagueView leagueView;
+  private final MainController controller; // Main controller
+  private final LiveMatchesView liveMatchesView; // Live matches view
+  private final LineUpView lineUpView; // Line up view
+  private final NotificationView NotificationView; // Notification view
+  private final LeagueView leagueView; // League view
 
+  /**
+   * Constructor that initializes the controller and its services, as well as the views.
+   */
   public MainView() {
-    this.controller = new MainController(); // Inicializa el controlador y sus servicios
-    this.liveMatchesView = new LiveMatchesView();
-    this.lineUpView = new LineUpView(); // Inicializa la vista de alineaciones
-    this.NotificationView = new NotificationView(); // Inicializa la vista de notificaciones
-    this.leagueView = new LeagueView();  // Inicializa la vista de estadísticas de liga
+    this.controller = new MainController(); // Set the controller
+    this.liveMatchesView = new LiveMatchesView(); // Set the live matches view
+    this.lineUpView = new LineUpView(); // Set the line up view
+    this.NotificationView = new NotificationView(); // Set the notification view
+    this.leagueView = new LeagueView();  // Set the league view
 
     setTitle("Dashboard de Fútbol");
     setSize(800, 600);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(new BorderLayout());
 
-    // Crear un panel para el menú lateral y las notificaciones
+    // Create a panel for the left side of the window
     JPanel leftPanel = new JPanel();
-    leftPanel.setLayout(new BorderLayout(5, 5)); // Layout para el menú y las notificaciones
+    leftPanel.setLayout(new BorderLayout(5, 5)); // Layout with 5px of padding
 
-    // Crear el menú lateral
+    // Create the main menu panel
     JPanel menuPanel = new JPanel();
-    menuPanel.setLayout(new GridLayout(6, 1)); // Ahora hay 6 opciones en el menú
-    JButton liveMatchesButton = new JButton("Partidos en Directo");
-    JButton lineupsButton = new JButton("Mostrar Alineaciones"); // Nuevo botón para alineaciones
-    JButton NotificationsButton = new JButton("Notificaciones en Directo");
-    JButton LeagueStatsButton = new JButton("Estadísticas de Liga");
-    JButton exitButton = new JButton("Salir");
+    menuPanel.setLayout(new GridLayout(6, 1)); // 6 rows, 1 column
+    JButton liveMatchesButton = new JButton("Partidos en Directo"); // Live matches button
+    JButton lineupsButton = new JButton("Mostrar Alineaciones"); // Line ups button
+    JButton NotificationsButton = new JButton("Notificaciones en Directo"); // Live notifications button
+    JButton LeagueStatsButton = new JButton("Estadísticas de Liga"); // League stats button
+    JButton exitButton = new JButton("Salir"); // Exit button
 
     menuPanel.add(liveMatchesButton);
     menuPanel.add(lineupsButton);
@@ -51,68 +57,67 @@ public class MainView extends JFrame {
     menuPanel.add(LeagueStatsButton);
     menuPanel.add(exitButton);
 
-    // Ajustar el tamaño preferido del menú lateral
-    menuPanel.setPreferredSize(new Dimension(300, 300)); // 150px de ancho para el menú
+    // Set the menu panel size
+    menuPanel.setPreferredSize(new Dimension(300, 300));
     JLabel menuLabel = new JLabel("Menú", JLabel.CENTER);
     menuLabel.setFont(new Font("Arial", Font.BOLD, 30));
-    menuPanel.add(menuLabel, 0); // Añadir el JLabel al principio del GridLayout
+    menuPanel.add(menuLabel, 0);
 
-    // Añadir el menú al panel izquierdo
+    // Add the menu panel to the left panel
     leftPanel.add(menuPanel, BorderLayout.NORTH);
 
-    // Ajustar la vista de notificaciones para que ocupe la mitad de la pantalla
+    // Set the notification panel
     JPanel notificationPanel = new JPanel();
     notificationPanel.setLayout(new BorderLayout());
     notificationPanel.add(NotificationView.getPanel(), BorderLayout.CENTER);
 
-    // Establecer la altura del panel de notificaciones al 50% de la altura de la ventana
-    notificationPanel.setPreferredSize(new Dimension(300, 500)); // 50% de la altura
+    notificationPanel.setPreferredSize(new Dimension(300, 500)); // 50% of the window height
 
-    // Añadir las notificaciones al panel izquierdo
+    // Add the notification panel to the left panel
     leftPanel.add(notificationPanel, BorderLayout.SOUTH);
 
-    // Añadir el panel izquierdo al diseño principal
+    // Add the left panel to the main layout
     add(leftPanel, BorderLayout.WEST);
 
-    // Crear un panel contenedor para los partidos en directo y las estadísticas de liga
+    // Create a panel for the center of the window
     JPanel centerPanel = new JPanel();
-    centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS)); // Organizar de manera vertical
+    centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
-    // Añadir las vistas al panel contenedor
-    centerPanel.add(liveMatchesView.getPanel());  // Vista de partidos en directo
-    centerPanel.add(leagueView.getPanel());  // Vista de estadísticas de liga
+    // Add the views to the center panel
+    centerPanel.add(liveMatchesView.getPanel());  // Live matches view
+    centerPanel.add(leagueView.getPanel());  // League view
 
-    // Añadir el panel contenedor al diseño principal
+    // Add the center panel to the main layout
     add(centerPanel, BorderLayout.CENTER);
 
-    // Añadir la vista de alineaciones como está
-    add(lineUpView.getPanel(), BorderLayout.EAST); // Añadir la vista de alineaciones como JPanel
+    // Add the line up view to the right side of the window
+    add(lineUpView.getPanel(), BorderLayout.EAST);
 
-    // Acción para el botón de "Partidos en Directo"
+    // Add the action listeners to the buttons of the live matches view
     liveMatchesButton.addActionListener(e -> {
       controller.setStrategy(new LiveMatchesController(liveMatchesView));
       controller.executeStrategy();
     });
 
-    // Acción para el botón de "Mostrar Alineaciones"
+    // Add the action listeners to the buttons of the line up view
     lineupsButton.addActionListener(e -> {
       controller.setStrategy(new LineUpController(lineUpView));
       controller.executeStrategy();  // Llama al método execute() de LineUpController
     });
 
-    // Acción para el botón de "Notificaciones en Directo"
+    // Add the action listeners to the buttons of the notification view
     NotificationsButton.addActionListener(e -> {
       controller.setStrategy(new NotificationController(NotificationView));
       controller.executeStrategy();
     });
 
-    // Acción para el botón de "Estadísticas"
+    // Add the action listeners to the buttons of the league view
     LeagueStatsButton.addActionListener(e -> {
       controller.setStrategy(new LeagueController(leagueView));
       controller.executeStrategy();
     });
 
-    // Acción para el botón de "Salir"
+    // Add the action listener to the exit button
     exitButton.addActionListener(e -> System.exit(0));
   }
 }
