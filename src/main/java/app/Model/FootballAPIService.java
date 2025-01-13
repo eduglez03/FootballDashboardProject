@@ -138,7 +138,7 @@ public class FootballAPIService implements APIService {
    */
   public Map<String, List<String>> fetchLineupForMatch(String matchId) {
     try {
-      // URL para obtener las alineaciones de un partido
+      // URL to fetch the lineups for a specific match
       String lineupUrl = "https://v3.football.api-sports.io/fixtures/lineups?fixture=" + matchId;
 
       URL url = new URL(lineupUrl);
@@ -160,10 +160,10 @@ public class FootballAPIService implements APIService {
       }
       scanner.close();
 
-      // Verificar el contenido de la respuesta
+      // Print the response for debugging
       System.out.println("Respuesta de la API: " + result.toString());
 
-      // Parsear el JSON para obtener las alineaciones
+      // Parse the JSON response to extract the lineups
       return parseLineup(result.toString());
     } catch (IOException e) {
       e.printStackTrace();
@@ -183,17 +183,17 @@ public class FootballAPIService implements APIService {
 
     Map<String, List<String>> teamLineups = new HashMap<>();
 
-    // Iterar sobre las alineaciones y extraer los jugadores para cada equipo
+    // Iterate over the lineups and extract the players for each team
     for (JsonElement lineupElement : lineups) {
       JsonObject lineup = lineupElement.getAsJsonObject();
       JsonObject team = lineup.getAsJsonObject("team");
 
-      // Crear listas para las alineaciones de los equipos
+      // Get the team name and create a list to store the player lineups
       List<String> homeTeamLineup = new ArrayList<>();
       List<String> awayTeamLineup = new ArrayList<>();
 
-      // Alineación del equipo local
-      JsonArray homePlayers = lineup.getAsJsonArray("startXI");  // Corregido para acceder a la alineación
+      // Lineup for the home team
+      JsonArray homePlayers = lineup.getAsJsonArray("startXI");
       for (JsonElement playerElement : homePlayers) {
         JsonObject player = playerElement.getAsJsonObject();
         JsonObject playerDetails = player.getAsJsonObject("player");
@@ -202,12 +202,12 @@ public class FootballAPIService implements APIService {
         int playerNumber = playerDetails.get("number").getAsInt();
         String playerPos = playerDetails.get("pos").getAsString();
 
-        // Añadir el jugador con su nombre, número de dorsal y posición
+        // Add the player with their name, shirt number, and position
         homeTeamLineup.add(String.format("%s (Dorsal: %d, Posición: %s)", playerName, playerNumber, playerPos));
       }
 
-      // Alineación del equipo visitante
-      JsonArray awayPlayers = lineup.getAsJsonArray("startXI");  // Corregido para acceder a la alineación
+      // Lineup for the away team
+      JsonArray awayPlayers = lineup.getAsJsonArray("startXI");
       for (JsonElement playerElement : awayPlayers) {
         JsonObject player = playerElement.getAsJsonObject();
         JsonObject playerDetails = player.getAsJsonObject("player");
@@ -216,11 +216,11 @@ public class FootballAPIService implements APIService {
         int playerNumber = playerDetails.get("number").getAsInt();
         String playerPos = playerDetails.get("pos").getAsString();
 
-        // Añadir el jugador con su nombre, número de dorsal y posición
+        // Add the player with their name, shirt number, and position
         awayTeamLineup.add(String.format("%s (Dorsal: %d, Posición: %s)", playerName, playerNumber, playerPos));
       }
 
-      // Guardar las alineaciones de ambos equipos
+      // Store the lineups for both teams
       teamLineups.put("home", homeTeamLineup);
       teamLineups.put("away", awayTeamLineup);
     }
@@ -230,30 +230,29 @@ public class FootballAPIService implements APIService {
 
 
   /**
-   * Obtiene todas las ligas disponibles desde la API.
-   *
-   * @return Una lista de objetos League.
+   * Get the leagues from the API.
+   * @return A list of League objects.
    */
   public List<League> getLeagues() {
     try {
-      // URL para obtener las ligas
+      // URL to get the leagues
       String leaguesUrl = "https://v3.football.api-sports.io/leagues";
 
-      // Configurar conexión
+      // Set up the connection
       URL url = new URL(leaguesUrl);
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.setRequestProperty("x-rapidapi-key", API_KEY);
       connection.setRequestProperty("x-rapidapi-host", "v3.football.api-sports.io");
       connection.setRequestMethod("GET");
 
-      // Comprobar el código de respuesta
+      // Check the response code
       int responseCode = connection.getResponseCode();
       if (responseCode != 200) {
         System.out.println("Error al obtener las ligas. Código de error: " + responseCode);
-        return List.of(); // Retornar lista vacía si hay un error
+        return List.of(); // Return an empty list if there's an error
       }
 
-      // Leer la respuesta
+      // Read the response
       Scanner scanner = new Scanner(connection.getInputStream());
       StringBuilder result = new StringBuilder();
       while (scanner.hasNext()) {
@@ -261,19 +260,18 @@ public class FootballAPIService implements APIService {
       }
       scanner.close();
 
-      // Procesar y retornar las ligas
+      // Process and return the leagues
       return parseLeagues(result.toString());
     } catch (IOException e) {
       e.printStackTrace();
-      return List.of(); // Retornar lista vacía si hay un error
+      return List.of(); // Return an empty list if there's an error
     }
   }
 
   /**
-   * Procesa la respuesta JSON para extraer las ligas.
-   *
-   * @param jsonResponse La respuesta JSON de la API.
-   * @return Una lista de objetos League.
+   * Parse the JSON response to get the leagues.
+   * @param jsonResponse
+   * @return
    */
   private List<League> parseLeagues(String jsonResponse) {
     List<League> leagues = new ArrayList<>();
@@ -286,7 +284,7 @@ public class FootballAPIService implements APIService {
         int id = leagueJson.getInt("id");
         String name = leagueJson.getString("name");
 
-        // Crear objeto League y agregarlo a la lista
+        // Create a League object and add it to the list
         League league = new League(id, name);
         leagues.add(league);
       }
@@ -297,10 +295,15 @@ public class FootballAPIService implements APIService {
     return leagues;
   }
 
-  // Método para obtener los equipos de una liga
+  /**
+   * Get the teams from a specific league and season.
+   * @param leagueId
+   * @param season
+   * @return
+   */
   public List<Team> getTeamFromLeague(int leagueId, int season) {
     try {
-      // Construir la URL para obtener los equipos de la liga
+      // Set up the connection
       String apiUrl = "https://v3.football.api-sports.io/teams?league=" + leagueId + "&season=" + season;
       URL url = new URL(apiUrl);
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -308,16 +311,16 @@ public class FootballAPIService implements APIService {
       connection.setRequestProperty("x-rapidapi-key", API_KEY);
       connection.setRequestMethod("GET");
 
-      // Comprobar el código de respuesta
+      // Check the response code
       int responseCode = connection.getResponseCode();
 
-      // Verificar si la respuesta es correcta (código 200)
+      // Check if the response code is 200 (OK)
       if (responseCode != 200) {
         System.out.println("Error al obtener los equipos. Código de error: " + responseCode);
-        return List.of(); // Retornar lista vacía si hay un error
+        return List.of(); // Return an empty list if there's an error
       }
 
-      // Leer la respuesta
+      // Read the response
       Scanner scanner = new Scanner(connection.getInputStream());
       StringBuilder result = new StringBuilder();
       while (scanner.hasNext()) {
@@ -325,36 +328,40 @@ public class FootballAPIService implements APIService {
       }
       scanner.close();
 
-      // Imprimir la respuesta para depuración
+      // Print the response for debugging
       System.out.println("Respuesta de la API: " + result);
 
-      // Procesar y retornar los equipos
+      // Process and return the teams
       return parseTeams(result.toString());
     } catch (Exception e) {
       System.out.println("Excepción al obtener los equipos: " + e.getMessage());
       e.printStackTrace();
-      return List.of(); // Retornar lista vacía si hay un error
+      return List.of(); // Return an empty list if there's an error
     }
   }
 
 
-  // Método para procesar la respuesta JSON y obtener los equipos
+  /**
+   * Parse the JSON response to get the teams.
+   * @param jsonResponse
+   * @return
+   */
   private List<Team> parseTeams(String jsonResponse) {
     List<Team> teams = new ArrayList<>();
     try {
       JsonObject response = JsonParser.parseString(jsonResponse).getAsJsonObject();
-      JsonArray teamsArray = response.getAsJsonArray("response"); // Obtener el array de equipos
+      JsonArray teamsArray = response.getAsJsonArray("response"); // Get the array of teams
 
-      // Iterar sobre cada elemento del array y crear los objetos Team
+      // Iterate over the teams and extract the team data
       for (JsonElement element : teamsArray) {
         JsonObject teamObject = element.getAsJsonObject();
         JsonObject teamData = teamObject.getAsJsonObject("team");
 
-        // Obtener los datos del equipo
+        // Get the team ID and name
         int id = teamData.get("id").getAsInt();
         String name = teamData.get("name").getAsString();
 
-        // Crear un objeto Team y agregarlo a la lista
+        // Create a Team object and add it to the list
         Team team = new Team(id, name);
         teams.add(team);
       }
@@ -364,10 +371,16 @@ public class FootballAPIService implements APIService {
     return teams;
   }
 
+  /**
+   * Get the statistics for the teams in a specific league and season.
+   * @param teams
+   * @param leagueId
+   * @param season
+   */
   public void getTeamsStatistics(List<Team> teams, int leagueId, int season) {
     for (Team team : teams) {
       try {
-        // Construir la URL para obtener las estadísticas del equipo
+        // Set up the connection
         String urlString = String.format(
                 "https://v3.football.api-sports.io/teams/statistics?season=%d&team=%d&league=%d",
                 season, team.getId(), leagueId
@@ -387,24 +400,24 @@ public class FootballAPIService implements APIService {
               result.append(scanner.nextLine());
             }
 
-            // Imprimir la respuesta completa para depuración
+            // Print the JSON response for debugging
             System.out.println("Respuesta JSON para el equipo " + team.getName() + ": " + result);
 
-            // Procesar la respuesta JSON y extraer las estadísticas
+            // Parse the JSON response to get the team statistics
             JsonObject jsonResponse = JsonParser.parseString(result.toString()).getAsJsonObject();
             JsonObject response = jsonResponse.getAsJsonObject("response");
 
             if (response != null) {
               JsonObject fixtures = response.getAsJsonObject("fixtures");
               if (fixtures != null) {
-                // Extraer estadísticas del equipo
+                // Get the statistics for the team
                 int wins = fixtures.getAsJsonObject("wins").get("total").getAsInt();
                 int draws = fixtures.getAsJsonObject("draws").get("total").getAsInt();
                 int losses = fixtures.getAsJsonObject("loses").get("total").getAsInt();
                 int goalsFor = response.getAsJsonObject("goals").getAsJsonObject("for").getAsJsonObject("total").get("total").getAsInt();
                 int goalsAgainst = response.getAsJsonObject("goals").getAsJsonObject("against").getAsJsonObject("total").get("total").getAsInt();
 
-                // Asignar las estadísticas al equipo
+                // Add the statistics to the team object
                 team.setWins(wins);
                 team.setDraws(draws);
                 team.setLosses(losses);
