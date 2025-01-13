@@ -8,12 +8,18 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * LiveMatchesView class
+ */
 public class LiveMatchesView {
   private final JPanel panel;
   private final DefaultTableModel tableModel;
   private final JTable matchesTable;
   private final JButton backButton;
 
+  /**
+   * Constructor method
+   */
   public LiveMatchesView() {
     panel = new JPanel();
     panel.setLayout(new BorderLayout(10, 10));
@@ -23,12 +29,12 @@ public class LiveMatchesView {
     titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
     panel.add(titleLabel, BorderLayout.NORTH);
 
-    // Crear la tabla para mostrar los partidos en vivo
+    // Create the table with the matches
     String[] columnNames = {"Equipo Local", "Goles Local", "Tiempo Juego", "Goles Visitante", "Equipo Visitante"};
     tableModel = new DefaultTableModel(columnNames, 0);
     matchesTable = new JTable(tableModel);
 
-    // Personalizar la tabla
+    // set table properties
     matchesTable.setDefaultEditor(Object.class, null);
     matchesTable.getTableHeader().setReorderingAllowed(false);
     matchesTable.setAutoCreateRowSorter(true);
@@ -59,33 +65,44 @@ public class LiveMatchesView {
     JScrollPane scrollPane = new JScrollPane(matchesTable);
     panel.add(scrollPane, BorderLayout.CENTER);
 
-    // Botón de retorno
+    // Back button
     backButton = new JButton("Cerrar");
     JPanel buttonPanel = new JPanel();
     buttonPanel.add(backButton);
     panel.add(buttonPanel, BorderLayout.SOUTH);
   }
 
+  /**
+   * Update the matches table
+   *
+   * @param matches List of matches
+   */
   public void updateMatches(List<Object[]> matches) {
-    tableModel.setRowCount(0); // Limpiar las filas existentes
+    tableModel.setRowCount(0); // Clear the table
     for (Object[] row : matches) {
       tableModel.addRow(row);
     }
   }
 
-  public void show() {
-    panel.setVisible(true);
-  }
+  /**
+   * Show the view
+   */
+  public void show() { panel.setVisible(true); }
 
-  public void hide() {
-    panel.setVisible(false);
-  }
+  /**
+   * Hide the view
+   */
+  public void hide() { panel.setVisible(false); }
 
-  public JPanel getPanel() {
-    return panel;
-  }
+  /**
+   * Get the panel
+   * @return
+   */
+  public JPanel getPanel() { return panel; }
 
-  public void addBackButtonListener(ActionListener listener) {
-    backButton.addActionListener(listener);
-  }
+  /**
+   * Add a back button listener
+   * @param listener
+   */
+  public void addBackButtonListener(ActionListener listener) { backButton.addActionListener(listener); }
 }
