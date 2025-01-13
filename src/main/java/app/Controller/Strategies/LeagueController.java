@@ -12,26 +12,36 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * LeagueController Class.
+ */
 public class LeagueController implements ControllerStrategy {
-  private final LeagueView leagueView;
-  private final FootballAPIService apiService;
+  private final LeagueView leagueView; // LeagueView
+  private final FootballAPIService apiService; // FootballAPIService
 
+    /**
+     * Constructor.
+     *
+     * @param leagueView LeagueView
+     */
   public LeagueController(LeagueView leagueView) {
     this.leagueView = leagueView;
     this.apiService = new FootballAPIService();
   }
 
+  /**
+   * Execute the strategy.
+   */
   @Override
   public void execute() {
-    // Mostrar la vista de ligas
-    leagueView.show();
+    leagueView.show(); // Show the LeagueView
 
-    // Obtener las ligas desde la API
+    // Get the leagues from the API
     List<League> leagues = apiService.getLeagues();
     leagueView.getLeagueListModel().clear();
     leagues.forEach(league -> leagueView.getLeagueListModel().addElement(league.getName()));
 
-    // Configurar el botón "Ver Liga"
+    // Set the "Ver equipos y estadísticas" button
     leagueView.addViewLeagueButtonListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -45,14 +55,19 @@ public class LeagueController implements ControllerStrategy {
       }
     });
 
-    // Configurar el botón "Cerrar"
+    // Set the "Cerrar" button
     leagueView.addCloseButtonListener(e -> leagueView.hide());
   }
 
+  /**
+   * Show the teams and stats of the selected league.
+   *
+   * @param selectedLeague League
+   */
   private void showTeamsAndStats(League selectedLeague) {
-    // Obtener los equipos de la liga seleccionada
-    List<Team> teams = apiService.getTeamFromLeague(selectedLeague.getId(), 2022); // Ejemplo con temporada 2022
-    apiService.getTeamsStatistics(teams, selectedLeague.getId(), 2022); // Obtener las estadísticas de los equipos
+    // Get the teams from the selected league
+    List<Team> teams = apiService.getTeamFromLeague(selectedLeague.getId(), 2022); // Using 2022 as the season parameter
+    apiService.getTeamsStatistics(teams, selectedLeague.getId(), 2022); // Get the statistics of the teams
 
     leagueView.showStats(teams);
 
