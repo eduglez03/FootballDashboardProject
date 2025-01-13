@@ -1,18 +1,29 @@
 package app.Controller;
 
+/**
+ * MainController
+ */
 public class MainController {
-  private ControllerStrategy strategy;
+  private ControllerStrategy strategy; // Strategy pattern to execute the correct controller
 
-  // Constructor que inicializa todos los servicios relacionados con la API
+  /**
+   * Constructor
+   */
   public MainController() {}
 
+  /**
+   * Set the strategy
+   *
+   * @param strategy
+   */
   public void setStrategy(ControllerStrategy strategy) {
     this.strategy = strategy;
   }
 
+  /**
+   * Execute the strategy
+   */
   public void executeStrategy() {
-    if (strategy != null) {
-      strategy.execute();
-    }
+    if (strategy != null) { strategy.execute(); }
   }
 }
