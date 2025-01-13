@@ -7,15 +7,22 @@ import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * NotificationController
+ */
 public class NotificationController implements ControllerStrategy {
-    private final NotificationView notificationView;
-    private final MatchNotifier matchNotifier;
-    private final Map<String, JTextArea> userNotificationAreas;
-    private final List<UserSubscriber> subscribers;
-    private ScheduledExecutorService scheduler;
-    private MatchUpdater matchUpdater;
-    private FootballAPIService footballAPIService;
+    private final NotificationView notificationView; // NotificationView
+    private final MatchNotifier matchNotifier; // MatchNotifier
+    private final Map<String, JTextArea> userNotificationAreas; // Map of the user's notification areas
+    private final List<UserSubscriber> subscribers; // List of subscribers
+    private ScheduledExecutorService scheduler; // ScheduledExecutorService
+    private MatchUpdater matchUpdater; // MatchUpdater
+    private FootballAPIService footballAPIService; // FootballAPIService
 
+    /**
+     * Constructor
+     * @param notificationView NotificationView
+     */
     public NotificationController(NotificationView notificationView) {
         this.notificationView = notificationView;
         this.matchNotifier = new MatchNotifier();
@@ -24,19 +31,22 @@ public class NotificationController implements ControllerStrategy {
         this.footballAPIService = new FootballAPIService();
         this.matchUpdater = new MatchUpdater(footballAPIService, matchNotifier);
 
-        // Configurar el botón "Volver"
+        // Set the back button listener
         notificationView.addBackButtonListener(e -> stop());
     }
+
+    /**
+     * Execute
+     */
     @Override
     public void execute() {
-        // Mostrar la vista de notificaciones
-        notificationView.show();
+        notificationView.show(); // Show the notification view
 
-        // Configurar el área de notificaciones para el único usuario
+        // Set the notification area for the user
         JTextArea notificationArea = notificationView.getNotificationArea();
         userNotificationAreas.put("Usuario", notificationArea);
 
-        // Crear el suscriptor y añadirlo al observador
+        // Create a subscriber for the user
         UserSubscriber subscriber = new UserSubscriber("Usuario", userNotificationAreas) {
             @Override
             public void update(Match match) {
@@ -47,12 +57,15 @@ public class NotificationController implements ControllerStrategy {
         subscribers.add(subscriber);
         matchNotifier.addObserver(subscriber);
 
-        // Iniciar la actualización periódica
+        // Start the scheduler
         run();
     }
 
+    /**
+     * Run the scheduler
+     */
     public void run() {
-        // Inicializar el scheduler para actualizar los resultados de los partidos cada minuto
+        // Run the scheduler to update the match results every minute
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(() -> {
             try {
@@ -68,11 +81,14 @@ public class NotificationController implements ControllerStrategy {
         }, 0, 1, TimeUnit.MINUTES);
     }
 
+    /**
+     * Stop the scheduler
+     */
     public void stop() {
         if (scheduler != null && !scheduler.isShutdown()) {
             scheduler.shutdown();
         }
-        // Reiniciar el área de notificaciones antes de ocultar la vista
+        // Reset the notification area
         notificationView.resetNotificationArea();
         notificationView.hide();
     }
