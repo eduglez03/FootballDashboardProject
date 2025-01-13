@@ -1,75 +1,110 @@
 package app.Model;
 
+/**
+ * Team class
+ */
 public class Team {
-    private int id;
-    private String name;
-    private int wins;
-    private int draws;
-    private int losses;
-    private int goalsFor;
-    private int goalsAgainst;
+  private int id; // Id
+  private String name; // Name
+  private int wins; // Wins
+  private int draws; // Draws
+  private int losses; // Losses
+  private int goalsFor; // Goals for
+  private int goalsAgainst; // Goals against
 
-    public Team(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+  /**
+   * Constructor
+   * @param id Id
+   * @param name Name
+   */
+  public Team(int id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 
-    // Getters y setters
-    public int getId() {
-        return id;
-    }
+  /**
+   * Getter id
+   * @return
+   */
+  public int getId() { return id; }
 
-    public String getName() {
-        return name;
-    }
+  /**
+   * Getter name
+   * @return
+   */
+  public String getName() { return name; }
 
-    public int getWins() {
-        return wins;
-    }
+  /**
+   * Getter wins
+   * @return
+   */
+  public int getWins() { return wins; }
 
-    public void setWins(int wins) {
-        this.wins = wins;
-    }
+  /**
+   * Setter wins
+   * @param wins
+   */
+  public void setWins(int wins) { this.wins = wins; }
 
-    public int getDraws() {
-        return draws;
-    }
+  /**
+   * Getter draws
+   * @return
+   */
+  public int getDraws() { return draws; }
 
-    public void setDraws(int draws) {
-        this.draws = draws;
-    }
+  /**
+   * Setter draws
+   * @param draws
+   */
+  public void setDraws(int draws) { this.draws = draws; }
 
-    public int getLosses() {
-        return losses;
-    }
+  /**
+   * Getter losses
+   * @return
+   */
+  public int getLosses() { return losses; }
 
-    public void setLosses(int losses) {
-        this.losses = losses;
-    }
+  /**
+   * Setter losses
+   * @param losses
+   */
+  public void setLosses(int losses) { this.losses = losses; }
 
-    public int getGoalsFor() {
-        return goalsFor;
-    }
+  /**
+   * Getter goalsFor
+   * @return
+   */
+  public int getGoalsFor() { return goalsFor; }
 
-    public void setGoalsFor(int goalsFor) {
-        this.goalsFor = goalsFor;
-    }
+  /**
+   * Setter goalsFor
+   * @param goalsFor
+   */
+  public void setGoalsFor(int goalsFor) { this.goalsFor = goalsFor; }
 
-    public int getGoalsAgainst() {
-        return goalsAgainst;
-    }
+  /**
+   * Getter goalsAgainst
+   * @return
+   */
+  public int getGoalsAgainst() { return goalsAgainst; }
 
-    public void setGoalsAgainst(int goalsAgainst) {
-        this.goalsAgainst = goalsAgainst;
-    }
+  /**
+   * Setter goalsAgainst
+   * @param goalsAgainst
+   */
+  public void setGoalsAgainst(int goalsAgainst) { this.goalsAgainst = goalsAgainst; }
 
-    @Override
-    public String toString() {
-        return "Equipo: " + name + "\n" +
-                "Partidos ganados: " + wins + "\n" +
-                "Partidos empatados: " + draws + "\n" +
-                "Partidos perdidos: " + losses + "\n" +
-                "Goles a favor: " + goalsFor + "\n" +
-                "Goles en contra: " + goalsAgainst + "\n";
-    }
+  /**
+   * ToString method
+   * @return
+   */
+  @Override
+  public String toString() {
+    return "Equipo: " + name + "\n" +
+            "Partidos ganados: " + wins + "\n" +
+            "Partidos empatados: " + draws + "\n" +
+            "Partidos perdidos: " + losses + "\n" +
+            "Goles a favor: " + goalsFor + "\n" +
+            "Goles en contra: " + goalsAgainst + "\n";
+  }
 }
