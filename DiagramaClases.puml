@@ -1,0 +1,278 @@
+@startuml
+class app.View.Components.LiveMatchesView {
+- JPanel panel
+- DefaultTableModel tableModel
+- JTable matchesTable
+- JButton backButton
++ void updateMatches(List<Object[]>)
++ void show()
++ void hide()
++ JPanel getPanel()
++ void addBackButtonListener(ActionListener)
+}
+
+
+interface app.Controller.ControllerStrategy {
+~ void execute()
+}
+
+class app.Model.FootballAPIService {
+- {static} String API_URL
+- {static} String API_KEY
+- Map<String,Map<String,List<String>>> matchLineups
++ Map<String,Match> fetchMatchResults()
++ Map<String,Match> parseMatchResults(String)
+- int getGoals(JsonObject,String)
++ Map<String,List<String>> fetchLineupForMatch(String)
+- Map<String,List<String>> parseLineup(String)
++ List<League> getLeagues()
+- List<League> parseLeagues(String)
++ List<Team> getTeamFromLeague(int,int)
+- List<Team> parseTeams(String)
++ void getTeamsStatistics(List<Team>,int,int)
+}
+
+
+interface app.Model.APIService {
+~ Map<String,Match> fetchMatchResults()
+~ Map<String,Match> parseMatchResults(String)
+}
+
+class app.Model.Match {
+- String homeTeam
+- String awayTeam
+- int homeGoals
+- int awayGoals
+- String matchId
+- boolean isFinished
+- String changeMessage
+- int time
+- List<String> homeTeamLineup
+- List<String> awayTeamLineup
++ boolean isFinished()
++ int getTime()
++ String getHomeTeam()
++ String getAwayTeam()
++ int getHomeGoals()
++ int getAwayGoals()
++ String getMatchId()
++ String getChangeMessage()
++ List<String> getHomeTeamLineup()
++ List<String> getAwayTeamLineup()
++ void setChangeMessage(String)
++ String toString()
++ void getLineups()
+}
+
+
+class app.Controller.Strategies.LeagueController {
+- LeagueView leagueView
+- FootballAPIService apiService
++ void execute()
+- void showTeamsAndStats(League)
+}
+
+
+class app.Model.Team {
+- int id
+- String name
+- int wins
+- int draws
+- int losses
+- int goalsFor
+- int goalsAgainst
++ int getId()
++ String getName()
++ int getWins()
++ void setWins(int)
++ int getDraws()
++ void setDraws(int)
++ int getLosses()
++ void setLosses(int)
++ int getGoalsFor()
++ void setGoalsFor(int)
++ int getGoalsAgainst()
++ void setGoalsAgainst(int)
++ String toString()
+}
+
+
+abstract class app.Model.UserSubscriber {
+- String username
+- Map<String,JTextArea> userNotificationAreas
++ void update(Match)
++ String getUsername()
+}
+
+
+class app.View.Components.LineUpView {
+- JList<String> matchList
+- DefaultListModel<String> matchListModel
+- JButton viewLineupButton
+- JButton closeButton
+- JPanel panel
+- Map<String,Match> liveMatches
++ JPanel getPanel()
++ void setVisible(boolean)
++ void setMatchList(Map<String,Match>)
++ int getSelectedMatchIndex()
++ JButton getViewLineupButton()
++ JButton getBackButton()
++ void clear()
+- void setupUI()
++ void showLineups(Match)
+}
+
+
+class app.AppTest {
++ {static} Test suite()
++ void testApp()
+}
+
+class app.Controller.Strategies.NotificationController {
+- NotificationView notificationView
+- MatchNotifier matchNotifier
+- Map<String,JTextArea> userNotificationAreas
+- List<UserSubscriber> subscribers
+- ScheduledExecutorService scheduler
+- MatchUpdater matchUpdater
+- FootballAPIService footballAPIService
++ void execute()
++ void run()
++ void stop()
+}
+
+
+class app.View.MainView {
+- MainController controller
+- LiveMatchesView liveMatchesView
+- LineUpView lineUpView
+- NotificationView NotificationView
+- LeagueView leagueView
+}
+
+class app.App {
++ {static} void main(String[])
+}
+
+class app.Model.MatchNotifier {
+- List<UserSubscriber> observers
++ void addObserver(UserSubscriber)
++ void removeObserver(UserSubscriber)
++ void notifyChange(Match)
+}
+
+
+class app.Controller.Strategies.LiveMatchesController {
+- LiveMatchesView liveMatchesView
+- MatchNotifier matchNotifier
+- ScheduledExecutorService scheduler
+- MatchUpdater matchUpdater
++ void execute()
++ void run()
++ void stop()
++ List<Object[]> getLiveMatches()
+}
+
+
+class app.Model.League {
+- int id
+- String name
+- List<Integer> teamIds
+- List<Team> teams
++ int getId()
++ String getName()
++ List<Integer> getTeamIds()
++ List<Team> getTeams()
++ void addTeamId(int)
++ void addTeam(Team)
++ Team getTeamById(int)
++ String toString()
+}
+
+
+class app.View.Components.NotificationView {
+- JPanel panel
+- JTextArea notificationArea
+- JButton backButton
++ void resetNotificationArea()
++ void show()
++ void hide()
++ JTextArea getNotificationArea()
++ JPanel getPanel()
++ void addBackButtonListener(ActionListener)
+}
+
+
+class app.Controller.MainController {
+- ControllerStrategy strategy
++ void setStrategy(ControllerStrategy)
++ void executeStrategy()
+}
+
+
+class app.Model.MatchUpdater {
+- FootballAPIService apiService
+- MatchNotifier matchNotifier
+- Map<String,Match> ongoingMatches
++ void updateMatchResults()
+- void compareAndNotifyMatches(Map<String,Match>)
++ Map<String,Match> getLiveMatches()
+- boolean hasMatchChanged(Match,Match)
+}
+
+
+interface app.Model.Observer {
+~ void update(Match)
+}
+
+interface app.Model.Subject {
+~ void addObserver(UserSubscriber)
+~ void removeObserver(UserSubscriber)
+~ void notifyChange(Match)
+}
+
+class app.Controller.Strategies.LineUpController {
+- LineUpView lineupView
+- Map<String,Match> liveMatches
+- FootballAPIService footballAPIService
+- MatchNotifier matchNotifier
+- MatchUpdater matchUpdater
++ void execute()
+- void showSelectedMatchLineups()
+}
+
+
+class app.View.Components.LeagueView {
+- JPanel panel
+- JList<String> leagueList
+- JButton viewLeagueButton
+- JButton closeButton
+- JButton backButton
+- DefaultListModel<String> leagueListModel
++ void show()
++ void hide()
++ void clear()
+- void setupUI()
++ JList<String> getLeagueList()
++ JPanel getPanel()
++ DefaultListModel<String> getLeagueListModel()
++ void addCloseButtonListener(ActionListener)
++ void addViewLeagueButtonListener(ActionListener)
++ void showStats(List<Team>)
++ void addBackButtonListener(ActionListener)
+}
+
+
+
+
+app.Model.APIService <|.. app.Model.FootballAPIService
+app.Controller.ControllerStrategy <|.. app.Controller.Strategies.LeagueController
+app.Model.Observer <|.. app.Model.UserSubscriber
+junit.framework.TestCase <|-- app.AppTest
+app.Controller.ControllerStrategy <|.. app.Controller.Strategies.NotificationController
+app.View.JFrame <|-- app.View.MainView
+app.Model.Subject <|.. app.Model.MatchNotifier
+app.Controller.ControllerStrategy <|.. app.Controller.Strategies.LiveMatchesController
+app.Controller.ControllerStrategy <|.. app.Controller.Strategies.LineUpController
+@enduml

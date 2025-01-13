@@ -1,0 +1,69 @@
+\doxysection{app.\+Model.\+User\+Subscriber Class Reference}
+\hypertarget{classapp_1_1_model_1_1_user_subscriber}{}\label{classapp_1_1_model_1_1_user_subscriber}\index{app.Model.UserSubscriber@{app.Model.UserSubscriber}}
+Inheritance diagram for app.\+Model.\+User\+Subscriber\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classapp_1_1_model_1_1_user_subscriber}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classapp_1_1_model_1_1_user_subscriber_ac402b7e298c0928feef622a83b606bef}{User\+Subscriber}} (String username, Map$<$ String, JText\+Area $>$ user\+Notification\+Areas)
+\item 
+void \mbox{\hyperlink{classapp_1_1_model_1_1_user_subscriber_a9a78be10aa1195e111efa964d368e30a}{update}} (\mbox{\hyperlink{classapp_1_1_model_1_1_match}{Match}} match)
+\item 
+String \mbox{\hyperlink{classapp_1_1_model_1_1_user_subscriber_a521f9334862e2d9b1c3cc7576fb02914}{get\+Username}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{interfaceapp_1_1_model_1_1_observer}{app.\+Model.\+Observer}}}
+
+
+\doxysubsection{Detailed Description}
+Abstract class that represents a user subscriber to match notifications. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classapp_1_1_model_1_1_user_subscriber_ac402b7e298c0928feef622a83b606bef}\index{app.Model.UserSubscriber@{app.Model.UserSubscriber}!UserSubscriber@{UserSubscriber}}
+\index{UserSubscriber@{UserSubscriber}!app.Model.UserSubscriber@{app.Model.UserSubscriber}}
+\doxysubsubsection{\texorpdfstring{UserSubscriber()}{UserSubscriber()}}
+{\footnotesize\ttfamily \label{classapp_1_1_model_1_1_user_subscriber_ac402b7e298c0928feef622a83b606bef} 
+app.\+Model.\+User\+Subscriber.\+User\+Subscriber (\begin{DoxyParamCaption}\item[{String}]{username}{, }\item[{Map$<$ String, JText\+Area $>$}]{user\+Notification\+Areas}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructor that initializes the user subscriber with a username and a map of notification areas. 
+\begin{DoxyParams}{Parameters}
+{\em username} & Username of the subscriber \\
+\hline
+{\em user\+Notification\+Areas} & Map of notification areas for each user \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classapp_1_1_model_1_1_user_subscriber_a521f9334862e2d9b1c3cc7576fb02914}\index{app.Model.UserSubscriber@{app.Model.UserSubscriber}!getUsername@{getUsername}}
+\index{getUsername@{getUsername}!app.Model.UserSubscriber@{app.Model.UserSubscriber}}
+\doxysubsubsection{\texorpdfstring{getUsername()}{getUsername()}}
+{\footnotesize\ttfamily \label{classapp_1_1_model_1_1_user_subscriber_a521f9334862e2d9b1c3cc7576fb02914} 
+String app.\+Model.\+User\+Subscriber.\+get\+Username (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Getter for the username of the user subscriber. \begin{DoxyReturn}{Returns}
+Username of the user subscriber 
+\end{DoxyReturn}
+\Hypertarget{classapp_1_1_model_1_1_user_subscriber_a9a78be10aa1195e111efa964d368e30a}\index{app.Model.UserSubscriber@{app.Model.UserSubscriber}!update@{update}}
+\index{update@{update}!app.Model.UserSubscriber@{app.Model.UserSubscriber}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{classapp_1_1_model_1_1_user_subscriber_a9a78be10aa1195e111efa964d368e30a} 
+void app.\+Model.\+User\+Subscriber.\+update (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classapp_1_1_model_1_1_match}{Match}}}]{match}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Method to update the user subscriber with a new match. 
+\begin{DoxyParams}{Parameters}
+{\em match} & \doxylink{classapp_1_1_model_1_1_match}{Match} to update the user subscriber with \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceapp_1_1_model_1_1_observer}{app.\+Model.\+Observer}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/app/\+Model/User\+Subscriber.\+java\end{DoxyCompactItemize}

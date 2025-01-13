@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['getbackbutton_0',['getBackButton',['../classapp_1_1_view_1_1_components_1_1_line_up_view.html#ab23ac7e7242160cb59f2bd0cce36a871',1,'app::View::Components::LineUpView']]],
+  ['getdraws_1',['getDraws',['../classapp_1_1_model_1_1_team.html#ac672de4ff6754ab2d2cb50e438b84adc',1,'app::Model::Team']]],
+  ['getgoalsagainst_2',['getGoalsAgainst',['../classapp_1_1_model_1_1_team.html#a87b065b5c6da0f0f6bd502f2a83b7bd1',1,'app::Model::Team']]],
+  ['getgoalsfor_3',['getGoalsFor',['../classapp_1_1_model_1_1_team.html#afdd5e7b233c690b2942bd23e89ef633a',1,'app::Model::Team']]],
+  ['getid_4',['getId',['../classapp_1_1_model_1_1_league.html#ae3315f3092d6bb54c1416c420f9a8eef',1,'app.Model.League.getId()'],['../classapp_1_1_model_1_1_team.html#ab88909fb2a4c360eb9db38074b75ec1c',1,'app.Model.Team.getId()']]],
+  ['getleaguelist_5',['getLeagueList',['../classapp_1_1_view_1_1_components_1_1_league_view.html#a22728e1283798edef1ac720f70ac0aea',1,'app::View::Components::LeagueView']]],
+  ['getleaguelistmodel_6',['getLeagueListModel',['../classapp_1_1_view_1_1_components_1_1_league_view.html#ae6dba5b08657a8efd71e8d623405e3b4',1,'app::View::Components::LeagueView']]],
+  ['getleagues_7',['getLeagues',['../classapp_1_1_model_1_1_football_a_p_i_service.html#a2b13e8e62f911f03fa554f49f2d694a5',1,'app::Model::FootballAPIService']]],
+  ['getlineups_8',['getLineups',['../classapp_1_1_model_1_1_match.html#a0c7ffa803ec4bc103ea202ef21e335d0',1,'app::Model::Match']]],
+  ['getlivematches_9',['getLiveMatches',['../classapp_1_1_controller_1_1_strategies_1_1_live_matches_controller.html#a12fecc1b34a8ba40ed79db4f385ed82f',1,'app.Controller.Strategies.LiveMatchesController.getLiveMatches()'],['../classapp_1_1_model_1_1_match_updater.html#abfeb1663870a4c91d95d1d8d572fcc96',1,'app.Model.MatchUpdater.getLiveMatches()']]],
+  ['getlosses_10',['getLosses',['../classapp_1_1_model_1_1_team.html#a90580d559b17f0bcd68b47f6dfce8ef4',1,'app::Model::Team']]],
+  ['getname_11',['getName',['../classapp_1_1_model_1_1_league.html#a3680e8ad77b80a106a0fbaf710f95eb3',1,'app.Model.League.getName()'],['../classapp_1_1_model_1_1_team.html#ac2586f2d087834fec2acf1ca51ba69ac',1,'app.Model.Team.getName()']]],
+  ['getnotificationarea_12',['getNotificationArea',['../classapp_1_1_view_1_1_components_1_1_notification_view.html#a9cd353f598fbeb7a8e79ad015aa43f64',1,'app::View::Components::NotificationView']]],
+  ['getpanel_13',['getPanel',['../classapp_1_1_view_1_1_components_1_1_league_view.html#a62c918d58402d5c30bccfc4aafabf929',1,'app.View.Components.LeagueView.getPanel()'],['../classapp_1_1_view_1_1_components_1_1_line_up_view.html#abb2186e41fd489cc7878002820996b98',1,'app.View.Components.LineUpView.getPanel()'],['../classapp_1_1_view_1_1_components_1_1_live_matches_view.html#a118dfca4c3f0ed876fb5c166f22e7237',1,'app.View.Components.LiveMatchesView.getPanel()'],['../classapp_1_1_view_1_1_components_1_1_notification_view.html#af6f7c7953ba0277149e90377141eac9b',1,'app.View.Components.NotificationView.getPanel()']]],
+  ['getselectedmatchindex_14',['getSelectedMatchIndex',['../classapp_1_1_view_1_1_components_1_1_line_up_view.html#ac3d7219fa354812e57189ad68330083a',1,'app::View::Components::LineUpView']]],
+  ['getteambyid_15',['getTeamById',['../classapp_1_1_model_1_1_league.html#a6fb8c029e3db490d8ca5f66c22416782',1,'app::Model::League']]],
+  ['getteamfromleague_16',['getTeamFromLeague',['../classapp_1_1_model_1_1_football_a_p_i_service.html#a7629e8e8c7bd2470c49ceb4568e99f40',1,'app::Model::FootballAPIService']]],
+  ['getteamids_17',['getTeamIds',['../classapp_1_1_model_1_1_league.html#aeb21ca88719920012b82baeb3707fb87',1,'app::Model::League']]],
+  ['getteams_18',['getTeams',['../classapp_1_1_model_1_1_league.html#afde2e7daed68991f680c5b8cb93d5fc1',1,'app::Model::League']]],
+  ['getteamsstatistics_19',['getTeamsStatistics',['../classapp_1_1_model_1_1_football_a_p_i_service.html#a2b4f7a5ba37a6c6a2b0fa7f6054cb0b5',1,'app::Model::FootballAPIService']]],
+  ['getusername_20',['getUsername',['../classapp_1_1_model_1_1_user_subscriber.html#a521f9334862e2d9b1c3cc7576fb02914',1,'app::Model::UserSubscriber']]],
+  ['getviewlineupbutton_21',['getViewLineupButton',['../classapp_1_1_view_1_1_components_1_1_line_up_view.html#a82b604b530a7d816472cbaab239ed919',1,'app::View::Components::LineUpView']]],
+  ['getwins_22',['getWins',['../classapp_1_1_model_1_1_team.html#a6fa95071b44a2c01a49cd0c6d0de3343',1,'app::Model::Team']]]
+];
