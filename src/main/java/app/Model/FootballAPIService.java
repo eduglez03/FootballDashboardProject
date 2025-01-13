@@ -24,7 +24,7 @@ import java.util.*;
  */
 public class FootballAPIService implements APIService {
   private static final String API_URL = "https://v3.football.api-sports.io/fixtures?live=all"; // API URL
-  private static final String API_KEY = "186dc55fb4942acfd2b06fbf59e11995"; // API Key
+  private static final String API_KEY = "dfed2726a7407b4ae16e67c5ae27c435"; // API Key
   private Map<String, Map<String, List<String>>> matchLineups = new HashMap<>(); // Store lineups by matchId
 
   /**
