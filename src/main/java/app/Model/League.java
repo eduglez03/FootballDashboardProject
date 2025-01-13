@@ -3,66 +3,93 @@ package app.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * League class represents a sports league.
+ */
 public class League {
-    private int id;
-    private String name;
-    private List<Integer> teamIds; // Lista de IDs de los equipos
-    private List<Team> teams;      // Lista de objetos Team
+  private int id; // ID
+  private String name; // Name of the league
+  private List<Integer> teamIds; // List of team IDs
+  private List<Team> teams; // List of teams
 
-    public League(int id, String name) {
-        this.id = id;
-        this.name = name;
-        this.teamIds = new ArrayList<>();
-        this.teams = new ArrayList<>();
-    }
+  /**
+   * Constructor
+   * @param id
+   * @param name
+   */
+  public League(int id, String name) {
+    this.id = id;
+    this.name = name;
+    this.teamIds = new ArrayList<>();
+    this.teams = new ArrayList<>();
+  }
 
-    // Getters y setters
-    public int getId() {
-        return id;
-    }
+  /**
+   * Getter ID
+   * @return
+   */
+  public int getId() { return id; }
 
-    public String getName() {
-        return name;
-    }
+  /**
+   * Getter Name
+   * @return
+   */
+  public String getName() { return name; }
 
-    public List<Integer> getTeamIds() {
-        return teamIds;
-    }
+  /**
+   * Setter Name
+   * @param name
+   */
+  public List<Integer> getTeamIds() { return teamIds; }
 
-    public List<Team> getTeams() {
-        return teams;
-    }
+  /**
+   * Getter Teams
+   * @return
+   */
+  public List<Team> getTeams() { return teams; }
 
-    // Métodos para añadir equipos
-    public void addTeamId(int teamId) {
-        if (!teamIds.contains(teamId)) {
-            teamIds.add(teamId);
-        }
-    }
+  /**
+   * Add team ID
+   * @param teamId
+   */
+  public void addTeamId(int teamId) {
+    if (!teamIds.contains(teamId)) { teamIds.add(teamId); }
+  }
 
-    public void addTeam(Team team) {
-        if (!teams.contains(team)) {
-            teams.add(team);
-            addTeamId(team.getId()); // Asegurar que el ID también se agrega
-        }
+  /**
+   * Add team
+   * @param team
+   */
+  public void addTeam(Team team) {
+    if (!teams.contains(team)) {
+      teams.add(team);
+      addTeamId(team.getId()); // Add team ID
     }
+  }
 
-    // Métodos para buscar equipos
-    public Team getTeamById(int teamId) {
-        return teams.stream()
-                .filter(team -> team.getId() == teamId)
-                .findFirst()
-                .orElse(null);
-    }
+  /**
+   * Get team by ID
+   * @param teamId
+   * @return
+   */
+  public Team getTeamById(int teamId) {
+    return teams.stream()
+            .filter(team -> team.getId() == teamId)
+            .findFirst()
+            .orElse(null);
+  }
 
-    // Método para mostrar información de la liga
-    @Override
-    public String toString() {
-        return "League{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", teamIds=" + teamIds +
-                ", teams=" + teams +
-                '}';
-    }
+  /**
+   * To String method
+   * @return
+   */
+  @Override
+  public String toString() {
+    return "League{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", teamIds=" + teamIds +
+            ", teams=" + teams +
+            '}';
+  }
 }
