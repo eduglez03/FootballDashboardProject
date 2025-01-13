@@ -1,6 +1,9 @@
 package app.Controller;
 
+/**
+ * ControllerStrategy
+ */
 public interface ControllerStrategy {
-  void execute();
+  void execute(); // Execute the strategy
 }
 
