@@ -12,33 +12,45 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
+/**
+ * LiveMatchesController
+ */
 public class LiveMatchesController implements ControllerStrategy {
-  private final LiveMatchesView liveMatchesView;
-  private final MatchNotifier matchNotifier;
-  private ScheduledExecutorService scheduler;
-  private MatchUpdater matchUpdater;
+  private final LiveMatchesView liveMatchesView; // Live matches view
+  private final MatchNotifier matchNotifier; // Match notifier
+  private ScheduledExecutorService scheduler; // Scheduler for periodic updates
+  private MatchUpdater matchUpdater; // Match updater
 
+  /**
+   * Constructor
+   *
+   * @param liveMatchesView Live matches view
+   */
   public LiveMatchesController(LiveMatchesView liveMatchesView) {
     this.liveMatchesView = liveMatchesView;
     this.matchNotifier = new MatchNotifier();
     FootballAPIService footballAPIService = new FootballAPIService();
     this.matchUpdater = new MatchUpdater(footballAPIService, matchNotifier);
 
-    // Configurar el botón "Volver"
+    // Set the back button listener
     liveMatchesView.addBackButtonListener(e -> stop());
   }
 
+  /**
+   * Set the match updater and execute the strategy
+   *
+   * @param matchUpdater Match updater
+   */
   @Override
   public void execute() {
-    // Mostrar la vista de partidos en directo
-    liveMatchesView.show();
-
-    // Iniciar la actualización periódica
-    run();
+    liveMatchesView.show(); // Show the live matches view
+    run(); // Start the periodic updates
   }
 
+  /**
+   * Start the scheduler to update the live matches every minute
+   */
   public void run() {
-    // Inicializar el scheduler para actualizar los partidos en vivo cada minuto
     scheduler = Executors.newSingleThreadScheduledExecutor();
     scheduler.scheduleAtFixedRate(() -> {
       try {
@@ -55,21 +67,27 @@ public class LiveMatchesController implements ControllerStrategy {
     }, 0, 1, TimeUnit.MINUTES);
   }
 
+  /**
+   * Stop the scheduler and hide the live matches view
+   */
   public void stop() {
-    if (scheduler != null && !scheduler.isShutdown()) {
-      scheduler.shutdown();
-    }
+    if (scheduler != null && !scheduler.isShutdown()) { scheduler.shutdown(); }
     liveMatchesView.hide();
   }
 
+  /**
+   * Get the live matches
+   *
+   * @return List of live matches
+   */
   public List<Object[]> getLiveMatches() {
     if (matchUpdater == null) {
-      return List.of(); // Retorna una lista vacía si no se ha inicializado
+      return List.of(); // Return an empty list if the match updater is null
     }
 
-    Map<String, Match> liveMatches = matchUpdater.getLiveMatches();
+    Map<String, Match> liveMatches = matchUpdater.getLiveMatches(); // Get the live matches
 
-    // Convertir el mapa a una lista de arreglos de objetos
+    // Map the live matches to a list of objects
     return liveMatches.values().stream()
             .map(match -> new Object[]{
                     match.getHomeTeam(),
@@ -78,6 +96,6 @@ public class LiveMatchesController implements ControllerStrategy {
                     match.getAwayGoals(),
                     match.getAwayTeam()
             })
-            .collect(Collectors.toList()); // Usar Collectors.toList() para compatibilidad
+            .collect(Collectors.toList());
   }
 }
